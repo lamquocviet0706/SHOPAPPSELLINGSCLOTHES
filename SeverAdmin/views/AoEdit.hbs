@@ -1,0 +1,112 @@
+<section id="container">
+    <!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+    <!--header start-->
+    <header class="header black-bg">
+        <div class="sidebar-toggle-box">
+            <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+        </div>
+        <!--logo start-->
+        <a href="index.html" class="logo"><b>QV Shop</b></a>
+        <!--logo end-->
+
+        <div class="top-menu">
+            <ul class="nav pull-right top-menu">
+                <li><a class="logout" href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </header><br>
+    <!--header end-->
+    <section id="main-content">
+        <section class="wrapper">
+            <form enctype="multipart/form-data" role="form" action="/Ao/update/{{ao._id}}" method="POST">
+            <div>
+                <label for="exampleFormControlInput1">Tên Sản Phẩm</label>
+                <input id="name" onchange="validateName()" value="{{ao.name}}" type="name" name="name" class="form-control" id="exampleFormControlInput1"><br>
+                <label for="exampleFormControlInput1">Ngày Sản Xuất</label>
+                <input id="date" value="{{formatDate ao.date 0}}" type="date" name="date" class="form-control" id="exampleFormControlInput1"><br>
+                <label for="exampleFormControlInput1">Giá Sản Phẩm</label>
+                <input  id="price" onchange="validatePrice()" value="{{ ao.price}}" type="name" name="price" class="form-control" ><br>
+
+                <label for="exampleFormControlInput1">Số Lượng</label>
+                <input id="amount" onchange="validateSL()" value="{{ao.amount}}" type="name" name="amount" class="form-control" ><br>
+                
+                
+                <label for="exampleFormControlFile1">Hình Ảnh Sản Phẩm</label><br>
+                <img src="{{ao.avatar}}" id="products-avart" width="150" height="150"></img>
+                <input onchange="onchangeImg()" value="{{ao.avatar}}" id="img" type="file" name="avatar" class="form-control-file">
+            </div><br>
+            <div class="col-sm-2 container"> <button class="btn btn-success btn-block mb-2 li_add"
+                onchange="validateForm()"    type="submit">Cập Nhật</button> </div>
+            </form>
+        </section>
+        <! --/wrapper -->
+    </section><!-- /MAIN CONTENT -->
+
+    <script>
+        //bat loi
+        let isNameValid = isDatevalid = isPricevalid = isAmountvalid = false;
+        const validateName = () => {
+            let val = document.getElementById('name').value;
+            if (!val || val.trim().length == 0) {
+                alert('không được bỏ trống')
+                isNameValid = false;
+            }
+            else {
+                isNameValid = true;
+            }
+            validateForm()
+        }
+        const validatePrice = () => {
+            let val = document.getElementById('price').value;
+            if (isNaN(val)) {
+                alert('chỉ được nhập số')
+                isPricevalid = false;
+            }
+            else if (val.trim().length == 0) {
+                alert('không được bỏ trống')
+                isPricevalid = false;
+            }
+            else {
+                isPricevalid = true;
+            }
+             validateForm()
+        }
+        const validateSL = () => {
+            let val = document.getElementById('amount').value;
+            if (isNaN(val)) {
+                alert('chỉ được nhập số')
+                isAmountvalid = false;
+            }
+            else if (val.trim().length == 0) {
+                alert('không được bỏ trống')
+                isAmountvalid = false;
+            }
+            else {
+                isAmountvalid = true;
+            }
+             validateForm()
+        }
+        const validateForm = () =>{
+            if(!isNameValid && !isDatevalid && !isPricevalid && !isAmountvalid)
+            {
+                document.getElementById('submit').disabled = true
+            }
+            else
+            {
+                document.getElementById('submit').disabled = false
+            }
+        }
+
+
+        //upload hinh
+        const onchangeImg = () => {
+            var file = document.getElementById('img').files[0];
+            var reader = new FileReader();
+            reader.onload = (e) =>{
+                document.getElementById('products-avart').src = e.target.result
+            }
+            reader.readAsDataURL(file)
+        }
+    </script>
